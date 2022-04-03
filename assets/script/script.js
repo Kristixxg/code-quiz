@@ -1,44 +1,82 @@
-var question1;
-var question2;
-var question3;
-
-
-var timerP = document.querySelector(".time-P");
-
-var questions = document.querySelector(".question");
-var answers = document.querySelector(".answers");
-var result = document.querySelector(".result");
+var scoreEl = documetn.querySelector("#score");
+var timerEl = document.querySelector("#timer");
+var startBtn = document.querySelector("#start");
+var questionEl = document.querySelector(".question");
+var optionBtns = document.querySelectorAll("li"); //can we use button inside li? 
+var messageEl = document.querySelector(".message");
 
 
 
+var set1 = {
+    question: "",
+    options:["answer1", "answer2", "answer3", "answer4"],
+    correctAnswer: this.options[0]
+}
 
-// countdown 
-var timeleft = 60;
+var set2 = {
+    question: "",
+    options:["answer1", "answer2", "answer3", "answer4"],
+    correctAnswer: this.options[0]
+}
 
-var setTime = setInterval(function(){
-    if () {
-        timeleft = timeleft - 20;
-    } 
+var set3 = {
+    question: "",
+    options:["answer1", "answer2", "answer3", "answer4"],
+    correctAnswer: this.options[0]
+}
 
+
+var timeInterval;
+var timeRemaining = 20;
+var score = 0;
+
+
+//get highest score record - complete
+renderRegistered ();
+
+function renderRegistered() {
+    var lastScore = localStorage.getItem("score");
+
+    if (lastScore === 0) {
+        return;
+    }
+
+    scoreEl.textcontent = lastScore;
+}
+
+startBtn.addEventListener("click", function(event) {
+
+    displayQuestion();
+
+});
+
+
+function displayQuestion() {
+
+}
+
+
+// countdown - complete
+
+timeInterval = setInterval(function(){
     timeleft--;
 
     if (timeleft === 0) {
-    clearInterval(setTime);
-    endGame();
+    clearInterval(timeInterval);
+    displayLostMsg();
     }
 
 }, 1000);
 
-function endGame () {
-
+function displayLostMsg () {
+    alert("Time is up. You lost.")
 }
 
-//score
 
-var score = 1;
 
-if () {
-    score++;
-}
+
+
+
+
 
 
