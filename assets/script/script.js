@@ -88,6 +88,7 @@ function displayQuestion(i) {
 
 
     if (i === poolOfQuestion.length - 1) {
+        
         clearInterval(timeInterval);
         localStorage.setItem("score", score);
         return;
@@ -155,4 +156,18 @@ function displayResultWrongMsg() {
 }
 
 
-    // displayWonMsg();
+
+
+
+
+//highest Score
+var userName = prompt("Please enter your name: ")
+localStorage.setItem("name", userName);
+
+var highestScore = 0;
+var newScore = localStorage.getItem("score");
+
+if (newScore > highestScore) {
+    highestScore = newScore;
+    scoreEl.textContent =  newScore;
+}
