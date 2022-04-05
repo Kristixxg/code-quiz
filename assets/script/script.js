@@ -12,20 +12,35 @@ var messageEl = document.querySelector(".message");
 
 var set0 = {
     question: "What city is the first Starbucks located?",
-    options:["Seattle", "San Francisco", "Portland", "New York"],
+    options:["A. Seattle", "B. San Francisco", "C. Portland", "D. New York"],
 };
 
 var set1 = {
     question: "How many ribs are in a human body?",
-    options:["24", "25", "26", "27"],
+    options:["A. 24", "B. 25", "C. 26", "D. 27"],
 };
 
 var set2 = {
-    question: "",
+    question: "set2",
     options:["answer1", "answer2", "answer3", "answer4"],
 }; 
 
-var poolOfQuestion = [set0, set1, set2];
+var set3 = {
+    question: "set3",
+    options:["answer1", "answer2", "answer3", "answer4"],
+}; 
+
+var set4 = {
+    question: "set4",
+    options:["answer1", "answer2", "answer3", "answer4"],
+}; 
+
+var set5 = {
+    question: "set5",
+    options:["answer1", "answer2", "answer3", "answer4"],
+}; 
+
+var poolOfQuestion = [set0, set1, set2, set3, set4, set5];
 var score;
 var i = 0;
 var timeInterval;
@@ -70,6 +85,14 @@ function timer20s() {
 }
 
 function displayQuestion(i) {
+
+
+    if (i === poolOfQuestion.length - 1) {
+        clearInterval(timeInterval);
+        localStorage.setItem("score", score);
+        return;
+    }
+
     questionEl.textContent = poolOfQuestion[i].question;
 
     option1El.textContent = poolOfQuestion[i].options[0];
@@ -84,9 +107,6 @@ function displayQuestion(i) {
     option4El.textContent = poolOfQuestion[i].options[3];
     option4El.setAttribute("data-state", "incorrect");
 
-    // if (i === poolOfQuestion.length - 1) {
-
-    // }
 }
 
 optionsEl.addEventListener("click", function(event){ 
@@ -134,7 +154,5 @@ function displayResultWrongMsg() {
     messageEl.textContent = "Incorrect!";
 }
 
- // ) while ( i !== (poolOfQuestion.length - 1));
 
-    // clearInterval(timeInterval);
     // displayWonMsg();
