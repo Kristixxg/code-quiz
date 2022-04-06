@@ -9,39 +9,43 @@ var option2El = document.querySelector(".option2");
 var option3El = document.querySelector(".option3");
 var option4El = document.querySelector(".option4");
 var messageEl = document.querySelector(".message");
+var resultEl = document.querySelector(".result");
+var resetBtn = document.querySelector("#reset");
 
 var set0 = {
-    question: "What city is the first Starbucks located?",
-    options:["A. Seattle", "B. San Francisco", "C. Portland", "D. New York"],
+  question: "What city is the first Starbucks located?",
+  options: ["A. Seattle", "B. San Francisco", "C. Portland", "D. New York"],
 };
 
 var set1 = {
-    question: "How many ribs are in a human body?",
-    options:["A. 24", "B. 25", "C. 26", "D. 27"],
+  question: "How many ribs are in a human body?",
+  options: ["A. 24", "B. 25", "C. 26", "D. 27"],
 };
 
 var set2 = {
-    question: "set2",
-    options:["answer1", "answer2", "answer3", "answer4"],
-}; 
+  question: "set2",
+  options: ["answer1", "answer2", "answer3", "answer4"],
+};
 
 var set3 = {
-    question: "set3",
-    options:["answer1", "answer2", "answer3", "answer4"],
-}; 
+  question: "set3",
+  options: ["answer1", "answer2", "answer3", "answer4"],
+};
 
 var set4 = {
-    question: "set4",
-    options:["answer1", "answer2", "answer3", "answer4"],
-}; 
+  question: "set4",
+  options: ["answer1", "answer2", "answer3", "answer4"],
+};
 
 var set5 = {
-    question: "set5",
-    options:["answer1", "answer2", "answer3", "answer4"],
-}; 
+  question: "set5",
+  options: ["answer1", "answer2", "answer3", "answer4"],
+};
 
 var poolOfQuestion = [set0, set1, set2, set3, set4, set5];
-var score;
+
+// var highestScore = 0;
+var newScore = 0;
 var i = 0;
 var timeInterval;
 var timeLeft = 20;
@@ -50,124 +54,184 @@ var timeLeft = 20;
 renderRegistered();
 
 function renderRegistered() {
-    score = localStorage.getItem("score");
-    console.log(score);
-    if (!score) {
-     return;
-    }
-    scoreEl.textContent = score;
+  newScore = localStorage.getItem("newScore");
+
+  if (!newScore) {
+    localStorage.setItem("newScore", 0);
+    return;
+  }
+
+  scoreEl.textContent = newScore;
 }
 
-
-startBtn.addEventListener("click", function(event) {
-
-    timer20s();
-    displayQuestion(i);
-
+startBtn.addEventListener("click", function (event) {
+  timer20s();
+  displayQuestion(i);
 });
-
 
 // countdown - complete
 function timer20s() {
+  timeInterval = setInterval(function () {
+    timeLeft--;
+    timerEl.textContent = timeLeft;
 
-    timeInterval = setInterval(function(){
-
-        timeLeft--;
-        timerEl.textContent = timeLeft;
-
-        if (timeLeft === 0) {
-        clearInterval(timeInterval);
-        renderRegistered();
-        displayLostMsg();
-        }
-
-    }, 1000);
+    if (timeLeft <= 0) {
+      clearInterval(timeInterval);
+      renderRegistered();
+      displayLostMsg();
+      enterRecord();
+    }
+  }, 1000);
 }
 
 function displayQuestion(i) {
+  console.log("display question", i);
 
+  if (i === poolOfQuestion.length) {
+    clearInterval(timeInterval);
+    localStorage.setItem("newScore", newScore);
+    return;
+  }
 
-    if (i === poolOfQuestion.length - 1) {
-        
-        clearInterval(timeInterval);
-        localStorage.setItem("score", score);
-        return;
+  if (i > poolOfQuestion.length) {
+    console.log("i is out of bound");
+    return;
+  }
+
+  questionEl.textContent = poolOfQuestion[i].question;
+
+  option1El.textContent = poolOfQuestion[i].options[0];
+  option1El.setAttribute("data-state", "correct");
+
+  option2El.textContent = poolOfQuestion[i].options[1];
+  option2El.setAttribute("data-state", "incorrect");
+
+  option3El.textContent = poolOfQuestion[i].options[2];
+  option3El.setAttribute("data-state", "incorrect");
+
+  option4El.textContent = poolOfQuestion[i].options[3];
+  option4El.setAttribute("data-state", "incorrect");
+}
+
+optionsEl.addEventListener("click", function (event) {
+  var element = event.target;
+  console.log("add event listener");
+
+  if (element.matches("button") === true) {
+    console.log("element clicked");
+    var state = element.getAttribute("data-state");
+
+    if (state === "correct") {
+      newScore++;
+      scoreEl.textContent = newScore;
+      localStorage.setItem("newScore", newScore);
+      displayResultMsg();
+      console.log("correct");
     }
 
-    questionEl.textContent = poolOfQuestion[i].question;
+    if (state === "incorrect") {
+      timeLeft = timeLeft - 5;
+      timerEl.textContent = timeLeft;
+      displayResultWrongMsg();
+      console.log("incorrect");
+    }
 
-    option1El.textContent = poolOfQuestion[i].options[0];
-    option1El.setAttribute("data-state", "correct");
+    //we dont want to display the next question when it gets to the last of question
+    //defensive coding to make sure that invalid value does not get sent to displayQuestion().
 
-    option2El.textContent = poolOfQuestion[i].options[1];
-    option2El.setAttribute("data-state", "incorrect");
+    if (i >= poolOfQuestion.length - 1) {
+      displayWonMsg();
+      clearInterval(timeInterval);
+      enterRecord();
+      return;
+    }
 
-    option3El.textContent = poolOfQuestion[i].options[2];
-    option3El.setAttribute("data-state", "incorrect");
+    displayQuestion(++i);
+  } else {
+    console.log("Not a button");
+  }
+});
 
-    option4El.textContent = poolOfQuestion[i].options[3];
-    option4El.setAttribute("data-state", "incorrect");
+function displayWonMsg() {
+  alert("Congraulations! You won and your score is:" + newScore);
 
 }
 
-optionsEl.addEventListener("click", function(event){ 
-    var element = event.target;
+function displayResultMsg() {
+  messageEl.textContent = "Correct!";
+}
 
-    if (element.matches("button") === true) {
+function displayLostMsg() {
+  alert("Time is up. You lost. Your highest Score is: " + newScore);
 
-        var state = element.getAttribute("data-state");
+}
 
-        if (state === "correct") {
-        score++;
-        scoreEl.textContent = score;
-        localStorage.setItem("score", score);
-        displayResultMsg();
+function displayResultWrongMsg() {
+  messageEl.textContent = "Incorrect!";
+}
 
-        }
-        
-        if (state === "incorrect") {
-        timeLeft = timeLeft - 5;
-        timerEl.textContent = timeLeft;
-        displayResultWrongMsg();
 
-        }
 
-        displayQuestion(i++);
-    }
+resetBtn.addEventListener("click", function () {
+  localStorage.setItem("newScore", "0");
+  localStorage.setItem("userName", "");
+  scoreEl.textContent = 0;
+  timeLeft = 20;
+  timerEl.textContent = 20;
+  displayQuestion(0);
 });
 
 
 
-function displayWonMsg() {
-    alert("Congraulations! You won and your score is:" +  score);
+
+
+function enterRecord() {
+    var initials = prompt("Please enter your initials: ");
+
+    // var recordArr = [] || JSON.parse(localStorage.getItem("data"));
+
+    // recordArr.forEach(player => {
+    //     var liTag = document.createElement("li");
+    //     liTag.textContent = player.initials + " - " + player.score;
+
+    //     var olEl = document.getElementById("highscores");
+    //     olEl.appendChild(liTag);
+    // });
+
+    // var seedBtn = document.getElementById("seed");
+
+    // seedBtn.addEventListener("click" ,function(){
+    
+        var newRecord = {
+        newinitials: initials,
+        newscore: newScore,
+        }
+
+        localStorage.setItem("data", JSON.stringify(newRecord));
+
+    // recordArr.push(newRecord);
+
+    
 }
 
-function displayResultMsg() {
-    messageEl.textContent = "Correct!";
+printScores;
 
-}
+function printScores() {
+        var newdata = JSON.parse(localStorage.getItem("data"));
 
-function displayLostMsg () {
-    alert("Time is up. You lost. Your highest Score is: " + score);
-}
-
-function displayResultWrongMsg() {
-    messageEl.textContent = "Incorrect!";
-}
+        var olEl = document.querySelector("#highscores");
+        var liTag = document.createElement("li");
+        liTag.textContent = newdata.newscore;
+        olEl.appendChild(liTag);
 
 
-
-
-
-
-//highest Score
-var userName = prompt("Please enter your name: ")
-localStorage.setItem("name", userName);
-
-var highestScore = 0;
-var newScore = localStorage.getItem("score");
-
-if (newScore > highestScore) {
-    highestScore = newScore;
-    scoreEl.textContent =  newScore;
+        // console.log(newdata);
+    
+        // newdata.forEach(player => {
+        //     var liTag = document.createElement("li");
+        //     liTag.textContent = player.newinitials + " - " + player.newscore;
+    
+        //     var olEl = document.getElementById("highscores");
+        //     olEl.appendChild(liTag);
+        // });
 }
