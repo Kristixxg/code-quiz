@@ -13,33 +13,33 @@ var resultEl = document.querySelector(".result");
 var resetBtn = document.querySelector("#reset");
 
 var set0 = {
-  question: "What city is the first Starbucks located?",
-  options: ["A. Seattle", "B. San Francisco", "C. Portland", "D. New York"],
+  question: "Which one of these does not require a closing tag?",
+  options: ["A. <hr> ", "B. <h1>", "C. <div>", "D. <main>"],
 };
 
 var set1 = {
-  question: "How many ribs are in a human body?",
-  options: ["A. 24", "B. 25", "C. 26", "D. 27"],
+  question: "What is one way to exit a loop",
+  options: ["A. break", "B. console.log", "C. delete", "D. Command+Q"],
 };
 
-var set2 = {
-  question: "set2",
-  options: ["answer1", "answer2", "answer3", "answer4"],
+var set2 = { 
+  question: "<span> is: ",
+  options: ["An inline element", "A block element", "A function", "A call back function"],
 };
 
 var set3 = {
-  question: "set3",
-  options: ["answer1", "answer2", "answer3", "answer4"],
+  question: "What is DOM stands for?",
+  options: ["Document Object Model", "Document of Model", "Document of Method", "Documentation of Method"],
 };
 
 var set4 = {
-  question: "set4",
-  options: ["answer1", "answer2", "answer3", "answer4"],
+  question: "What is APIs?",
+  options: ["Application Programming Interface", "App Program Interface", "App Process Interface", "Application Process Interface"],
 };
 
 var set5 = {
-  question: "set5",
-  options: ["answer1", "answer2", "answer3", "answer4"],
+  question: "Which of these increate margin-right?",
+  options: ["margin: 0 20px 0 0;", "margin: 20px 0;", "margin: 0 20px;", "margin: 20px;"],
 };
 
 var poolOfQuestion = [set0, set1, set2, set3, set4, set5];
