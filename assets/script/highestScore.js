@@ -49,15 +49,21 @@
 
 
 
-printScores();
+
 
 function printScores() {
-        var newdata = JSON.parse(localStorage.getItem("data"));
+        var dataArr = JSON.parse(localStorage.getItem("data"));
 
-        var olEl = document.querySelector("#highscores");
-        var liTag = document.createElement("li");
-        liTag.textContent = newdata.newinitials + " - " + newdata.newscore;
-        olEl.appendChild(liTag);
+        dataArr.forEach(element => {
+                var olEl = document.querySelector("#highscores");
+                var liTag = document.createElement("li");
+                liTag.textContent = element.newinitials + " - " + element.newscore;
+                olEl.appendChild(liTag);
+        });
+};
+
+printScores();
+        
 
 
         // console.log(newdata);
@@ -69,4 +75,4 @@ function printScores() {
         //     var olEl = document.getElementById("highscores");
         //     olEl.appendChild(liTag);
         // });
-}
+

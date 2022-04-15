@@ -38,33 +38,24 @@ var set4 = {
 };
 
 var set5 = {
-  question: "Which of these increate margin-right?",
+  question: "Which of these increase margin-right?",
   options: ["margin: 0 20px 0 0;", "margin: 20px 0;", "margin: 0 20px;", "margin: 20px;"],
 };
 
 var poolOfQuestion = [set0, set1, set2, set3, set4, set5];
 
 // var highestScore = 0;
-var newScore = 0;
-var i = 0;
+var dataArr;
+var currentScore;
+var i;
 var timeInterval;
-var timeLeft = 20;
+var timeLeft;
 
-//get highest score record - complete
-renderRegistered();
-
-function renderRegistered() {
-  newScore = localStorage.getItem("newScore");
-
-  if (!newScore) {
-    localStorage.setItem("newScore", 0);
-    return;
-  }
-
-  scoreEl.textContent = newScore;
-}
 
 startBtn.addEventListener("click", function (event) {
+  currentScore = 0;
+  i=0;
+  timeLeft=20;
   timer20s();
   displayQuestion(i);
 });
@@ -77,9 +68,10 @@ function timer20s() {
 
     if (timeLeft <= 0) {
       clearInterval(timeInterval);
-      renderRegistered();
       displayLostMsg();
       enterRecord();
+      startBtn.textContent = "Restart";
+      return;
     }
   }, 1000);
 }
@@ -89,7 +81,7 @@ function displayQuestion(i) {
 
   if (i === poolOfQuestion.length) {
     clearInterval(timeInterval);
-    localStorage.setItem("newScore", newScore);
+    localStorage.setItem("currentScore", currentScore);
     return;
   }
 
@@ -122,9 +114,9 @@ optionsEl.addEventListener("click", function (event) {
     var state = element.getAttribute("data-state");
 
     if (state === "correct") {
-      newScore++;
-      scoreEl.textContent = newScore;
-      localStorage.setItem("newScore", newScore);
+      currentScore++;
+      // scoreEl.textContent = currentScore;
+      localStorage.setItem("currentScore", currentScore);
       displayResultMsg();
       console.log("correct");
     }
@@ -143,18 +135,19 @@ optionsEl.addEventListener("click", function (event) {
       displayWonMsg();
       clearInterval(timeInterval);
       enterRecord();
+      startBtn.textContent = "Restart";
       return;
     }
 
     displayQuestion(++i);
+
   } else {
     console.log("Not a button");
   }
 });
 
 function displayWonMsg() {
-  alert("Congraulations! You won and your score is:" + newScore);
-
+  alert("Congratulations! You won and your score is:" + currentScore);
 }
 
 function displayResultMsg() {
@@ -162,8 +155,7 @@ function displayResultMsg() {
 }
 
 function displayLostMsg() {
-  alert("Time is up. You lost. Your highest Score is: " + newScore);
-
+  alert("Time is up. You lost. Your highest Score is: " + currentScore);
 }
 
 function displayResultWrongMsg() {
@@ -172,66 +164,43 @@ function displayResultWrongMsg() {
 
 
 
-resetBtn.addEventListener("click", function () {
-  localStorage.setItem("newScore", "0");
-  localStorage.setItem("userName", "");
-  scoreEl.textContent = 0;
-  timeLeft = 20;
-  timerEl.textContent = 20;
-  displayQuestion(0);
-});
+// resetBtn.addEventListener("click", function () {
+//   localStorage.setItem("currentScore", "0");
+//   scoreEl.textContent = 0;
+//   timeLeft = 20;
+//   timerEl.textContent = 20;
+//   displayQuestion(0);
+// });
 
 
+
+//get highest score record - complete
+// renderRegistered();
+
+// function renderRegistered() {
+//   currentScore = JSON.parse(localStorage.getItem("dataArr");
+
+//   if (!newScore) {
+//     localStorage.setItem("newScore", 0);
+//     return;
+//   }
+
+//   scoreEl.textContent = newScore;
+// }
 
 
 
 function enterRecord() {
-    var initials = prompt("Please enter your initials: ");
+  var initials = prompt("Please enter your initials: ");
 
-    // var recordArr = [] || JSON.parse(localStorage.getItem("data"));
+  var newRecord = {
+  newinitials: initials,
+  newscore: currentScore
+  }
 
-    // recordArr.forEach(player => {
-    //     var liTag = document.createElement("li");
-    //     liTag.textContent = player.initials + " - " + player.score;
+  dataArr = JSON.parse(localStorage.getItem("data")) || [];
+  dataArr.push(newRecord);
 
-    //     var olEl = document.getElementById("highscores");
-    //     olEl.appendChild(liTag);
-    // });
+  localStorage.setItem("data", JSON.stringify(dataArr));
 
-    // var seedBtn = document.getElementById("seed");
-
-    // seedBtn.addEventListener("click" ,function(){
-    
-        var newRecord = {
-        newinitials: initials,
-        newscore: newScore,
-        }
-
-        localStorage.setItem("data", JSON.stringify(newRecord));
-
-    // recordArr.push(newRecord);
-
-    
-}
-
-printScores;
-
-function printScores() {
-        var newdata = JSON.parse(localStorage.getItem("data"));
-
-        var olEl = document.querySelector("#highscores");
-        var liTag = document.createElement("li");
-        liTag.textContent = newdata.newscore;
-        olEl.appendChild(liTag);
-
-
-        // console.log(newdata);
-    
-        // newdata.forEach(player => {
-        //     var liTag = document.createElement("li");
-        //     liTag.textContent = player.newinitials + " - " + player.newscore;
-    
-        //     var olEl = document.getElementById("highscores");
-        //     olEl.appendChild(liTag);
-        // });
 }
