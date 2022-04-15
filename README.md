@@ -15,8 +15,10 @@ Installation is not required.
 
 ## Usage 
 
-
-![alt text](assets/Screen%20Shot%202022-04-05%20at%2010.25.27%20PM.png)
+![alt text](/assets/Screen%20Shot%202022-04-14%20at%206.02.33%20PM.png)
+![alt text](assets/Screen%20Shot%202022-04-14%20at%206.02.51%20PM.png)
+![alt text](assets/Screen%20Shot%202022-04-14%20at%206.03.53%20PM.png)
+![alt text](assets/Screen%20Shot%202022-04-14%20at%206.07.42%20PM.png)
 
 
 
